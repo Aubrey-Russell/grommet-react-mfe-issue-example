@@ -1,0 +1,84 @@
+{
+  "name": "mfe-ex-1",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mfe-ex-1/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/mfe-ex-1",
+        "index": "apps/mfe-ex-1/src/index.html",
+        "baseHref": "/",
+        "main": "apps/mfe-ex-1/src/main.ts",
+        "tsConfig": "apps/mfe-ex-1/tsconfig.app.json",
+        "assets": ["apps/mfe-ex-1/src/favicon.ico", "apps/mfe-ex-1/src/assets"],
+        "styles": ["apps/mfe-ex-1/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/mfe-ex-1/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/mfe-ex-1/src/environments/environment.ts",
+              "with": "apps/mfe-ex-1/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/mfe-ex-1/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "mfe-ex-1:build",
+        "hmr": true,
+        "port": 9777
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mfe-ex-1:build:development"
+        },
+        "production": {
+          "buildTarget": "mfe-ex-1:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "mfe-ex-1:build",
+        "watch": false,
+        "port": 9777
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mfe-ex-1:build:development"
+        },
+        "production": {
+          "buildTarget": "mfe-ex-1:build:production"
+        }
+      }
+    }
+  }
+}
